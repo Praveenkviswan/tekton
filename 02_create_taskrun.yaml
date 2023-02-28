@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: script
+spec:
+  taskRef:
+    name: script
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: maven
+spec:
+  taskRef:
+    name: maven
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: maven-with-params
+spec:
+  taskRef:
+    name: maven-with-params
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: maven-with-user-defined-params
+spec:
+  taskRef:
+    name: maven-with-params
+  params:
+    - name: goal
+      value: package
