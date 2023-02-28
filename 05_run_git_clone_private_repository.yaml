@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1
+kind: TaskRun
+metadata:
+  name: git-clone-private-repo
+spec:
+  taskRef:
+    name: git-clone
+  params:
+    - name: url
+      value: git@github.com:kul-samples/java_sample_webapp.git
+    - name: revision
+      value: master
+    - name: deleteExisting
+      value: 'true'
+  workspaces:
+    - name: output
+      persistentVolumeClaim:
+        claimName: workspaces
+    - name: ssh-directory
+      secret:
+        secretName: git-credentials
+  podTemplate:
+    nodeSelector:
+      kubernetes.io/hostname: app-node-2
