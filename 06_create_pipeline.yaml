@@ -4,7 +4,7 @@ metadata:
   name: mvn-build
 spec:
   description: |
-    This is a Tekton Pipeline for create a Java Application Package (war, ear, jar).
+    This is a Tekton Pipeline for creating a Java Application Package (war, ear, jar).
   params:
     - name: repository
       type: string
@@ -31,3 +31,9 @@ spec:
           value: "$(params.revision)"
         - name: deleteExisting
           value: 'true'
+    - name: build
+      taskRef:
+        name: maven-build
+      workspaces:
+        - name: source-code
+          workspace: source-code

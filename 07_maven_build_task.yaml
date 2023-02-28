@@ -1,0 +1,18 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: maven-build
+spec:
+  params:
+    - name: goal
+      type: string
+      description: mvn goal to be executed
+      default: compile
+  workspaces:
+    - name: source-code
+  steps:
+    - name: maven
+      image: kulbhushanmayer/ubuntu:maven
+      command: ["mvn"]
+      args: 
+        - "$(params.goal)"
