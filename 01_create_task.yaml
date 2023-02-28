@@ -1,0 +1,53 @@
+# task with script
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: script
+spec:
+  steps:
+    - name: checking-os
+      image: ubuntu:22.04
+      script: |
+        #!/bin/bash
+        echo [INFO] Hostname is `hostname`
+        cat /etc/os-release
+    - name: checking-os-1
+      image: rockylinux:9
+      script: |
+        #!/bin/bash
+        echo [INFO] Hostname is `hostname`
+        cat /etc/os-release
+---
+# task with command
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: maven
+spec:
+  steps:
+    - name: maven
+      image: kulbhushanmayer/ubuntu:appBuild
+      command: ["mvn"]
+      args:
+        - "clean"
+        - "compile"
+---
+# task with parameter
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: maven-with-params
+spec:
+  params:
+    - name: goal
+      type: string
+      description: mvn goal to be executed
+      default: compile
+  steps: 
+    - name: maven
+      image: kulbhushanmayer/ubuntu:appBuild
+      command: ["mvn"]
+      args:
+        - "clean"
+        - "$(params.goal)"
+
