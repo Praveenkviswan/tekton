@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: java-sample-webapp
+  generateName: java-sample-webapp-
 spec:
   pipelineRef:
     name: mvn-build
