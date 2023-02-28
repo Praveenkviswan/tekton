@@ -13,6 +13,7 @@ spec:
   steps:
     - name: maven
       image: kulbhushanmayer/ubuntu:maven
-      command: ["mvn"]
-      args: 
-        - "$(params.goal)"
+      script: |
+        #!/bin/bash
+        cd $(workspaces.source-code.path)
+        mvn $(params.goal)
