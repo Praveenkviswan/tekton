@@ -32,3 +32,21 @@ spec:
   params:
     - name: goal
       value: package
+---
+apiVersion: tekton.dev/v1
+kind: TaskRun
+metadata:
+  name: git-clone
+spec:
+  taskRef:
+    name: git-clone
+  params:
+    - name: url
+      value: https://github.com/kul-samples/java_sample_webapp
+  workspaces:
+    - name: output
+      persistentVolumeClaim:
+        claimName: workspaces
+  podTemplate:
+    nodeSelector:
+      kubernetes.io/hostname: app-node-2
