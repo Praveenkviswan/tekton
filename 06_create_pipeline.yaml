@@ -1,0 +1,33 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: mvn-build
+spec:
+  description: |
+    This is a Tekton Pipeline for create a Java Application Package (war, ear, jar).
+  params:
+    - name: repository
+      type: string
+      description: Git Repo to be cloned and build
+    - name: revision
+      type: string
+      description: branch to clone for build
+  workspaces:
+    - name: source-code
+    - name: git-credentials
+  tasks:
+    - name: clone
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: source-code
+        - name: ssh-directory
+          workspace: git-credentials
+      params:
+        - name: url
+          value: "$(params.repository)"
+        - name: revision
+          value: "$(params.revision)"
+        - name: deleteExisting
+          value: 'true'
