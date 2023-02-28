@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: java-sample-webapp
+spec:
+  pipelineRef:
+    name: mvn-build
+  params:
+    - name: repository
+      value: git@github.com:kul-samples/java_sample_webapp.git
+    - name: revision
+      value: master
+  workspaces:
+    - name: source-code
+      persistentVolumeClaim:
+        claimName: workspaces
+    - name: git-credentials
+      secret:
+        secretName: git-credentials
