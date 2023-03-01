@@ -4,7 +4,7 @@ metadata:
   name: mvn-build
 spec:
   description: |
-    This is a Tekton Pipeline for creating a Java Application Package (war, ear, jar).
+    This is a Tekton Pipeline for create a Java Application Package (war, ear, jar).
   params:
     - name: repository
       type: string
@@ -12,9 +12,14 @@ spec:
     - name: revision
       type: string
       description: branch to clone for build
+    - name: IMAGE
+    - name: goal
+      type: string
+      description: Image TAG to be created
   workspaces:
     - name: source-code
     - name: git-credentials
+    - name: dockerconfig
   tasks:
     - name: clone
       taskRef:
@@ -39,3 +44,19 @@ spec:
       workspaces:
         - name: source-code
           workspace: source-code
+      params:
+        - name: goal
+          value: $(params.goal)
+    - name: build-and-push-image
+      runAfter:
+        - build
+      taskRef:
+        name: kaniko
+      workspaces:
+        - name: source
+          workspace: source-code
+        - name: dockerconfig
+          workspace: dockerconfig
+      params:
+        - name: IMAGE
+          value: $(params.IMAGE)
