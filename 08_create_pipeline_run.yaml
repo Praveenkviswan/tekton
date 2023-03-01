@@ -10,6 +10,10 @@ spec:
       value: git@github.com:kul-samples/java_sample_webapp.git
     - name: revision
       value: master
+    - name: IMAGE
+      value: kulbhushanmayer/kaniko:latest
+    - name: goal
+      value: package
   workspaces:
     - name: source-code
       persistentVolumeClaim:
@@ -17,3 +21,6 @@ spec:
     - name: git-credentials
       secret:
         secretName: git-credentials
+    - name: dockerconfig
+      secret:
+        secretName: config.json
